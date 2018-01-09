@@ -1,3 +1,5 @@
 bin/elastic-analytics-api
 
 src/vendor
+
+.env
