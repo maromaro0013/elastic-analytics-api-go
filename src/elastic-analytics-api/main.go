@@ -4,6 +4,7 @@ import (
   "context"
   "fmt"
   "log"
+  "encoding/json"
   //"os"
 
   // "net/http"
@@ -11,7 +12,7 @@ import (
   // "goji.io/pat"
 
   "github.com/joho/godotenv"
-  elastic "gopkg.in/olivere/elastic.v5"
+  "gopkg.in/olivere/elastic.v5"
 )
 
 /*
@@ -40,12 +41,47 @@ func main() {
   if err != nil {
     panic(err)
   }
-  fmt.Println("Cluster %q has nodes %d", res.ClusterName, res.Version)
+  fmt.Printf("Cluster %q has version %d\n", res.ClusterName, res.Version)
 
-  names, err := client.IndexNames()
-  for _, name := range names {
-    fmt.Println(name)
+  //query := elastic.NewBoolQuery()
+  //query = query.Must(elastic.NewRangeQuery("time_iso8601").Gte("2018-01-10T00:00:00Z").Lte("2018-01-11T00:00:00Z"))
+
+  //query := elastic.NewRangeQuery("time_iso8601").Gte("2017-08-31T15:00:00Z").Lte("2017-09-30T14:59:59Z")
+  query := elastic.NewMatchAllQuery()
+
+/*
+  termQuery := elastic.NewTermQuery("test", "test")
+  searchResult, err := client.Search().
+      Index("axs_corporate").
+      Type("access_log").
+      Query(termQuery).
+      From(0).Size(10).
+      Pretty(true).
+      Do(context.Background())
+  if err != nil {
+      panic(err)
   }
+*/
+  src, err := query.Source()
+  if err != nil {
+  panic(err)
+  }
+  data, err := json.Marshal(src)
+  if err != nil {
+  panic(err)
+  }
+  s := string(data)
+  fmt.Println(s)
+
+  search := client.Search().Index("axs_corporate").Type("access_log")
+  //search = search.Query(query)
+  searchResult, err := search.Do(context.Background())
+  if err != nil {
+    panic(err)
+  }
+
+  fmt.Printf("Query took %d milliseconds\n", searchResult.TookInMillis)
+  fmt.Printf("%d\n", searchResult.Hits.TotalHits)
 
 /*
   mux := goji.NewMux()
