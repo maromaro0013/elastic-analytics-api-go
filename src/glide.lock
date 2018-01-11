@@ -1,12 +1,13 @@
 hash: 3441bf6ff6d443d7e65fcdfc4f1d1b67e506cee012ed3b4901bbe2aab9890aa9
-updated: 2018-01-09T19:14:28.795584+09:00
+updated: 2018-01-10T21:54:53.525284+09:00
 imports:
 - name: github.com/joho/godotenv
   version: 06e67b5ef3bef2e1a8696e1c04b94b44cbc5d9a5
-- name: goji.io
-  version: 0d89ff54b2c18c9c4ba530e32496aef902d3c6cd
+- name: github.com/pkg/errors
+  version: e881fd58d78e04cf6d0de1217f8707c8cc2249bc
+- name: gopkg.in/olivere/elastic.v5
+  version: ef745defcdcc081f19c499930dc12c7a6cb638b4
   subpackages:
-  - internal
-  - pat
-  - pattern
+  - config
+  - uritemplates
 testImports: []
